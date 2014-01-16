@@ -9,25 +9,11 @@ defmodule Exroboarm.Client do
     Exroboarm.Client.State.new(device: device)
   end
 
-  defcall hip(angle, time), state: state do
-    do_request(Commands.hip(angle, time), state)
-  end
-
-  defcall shoulder(angle, time), state: state do
-    do_request(Commands.shoulder(angle, time), state)
-  end
-
-  defcall elbow(angle, time), state: state do
-    do_request(Commands.elbow(angle, time), state)
-  end
-
-  defcall grip(angle, time), state: state do
-    do_request(Commands.grip(angle, time), state)
-  end
-
-  defcall wrist(angle, time), state: state do
-    do_request(Commands.wrist(angle, time), state)
-  end
+  [:hip, :shoulder, :elbow, :grip, :wrist] |> Enum.map(fn(which) ->
+    defcall unquote(which)(angle, time), state: state do
+      do_request(apply(Commands, which, [angle, time]), state)
+    end
+  end)
 
   defp do_request(request, state) do
     IO.inspect request

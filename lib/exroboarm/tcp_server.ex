@@ -1,4 +1,4 @@
-defrecord Exroboarm.State, client: nil, wrist: 90
+defrecord Exroboarm.State, client: nil, wrist: 90, hip: 90
 
 defmodule Exroboarm.TcpServer do
   def listen(port) do
@@ -21,9 +21,11 @@ defmodule Exroboarm.TcpServer do
       {:ok, data} ->
         IO.puts "Got some data! #{data}"
         state = case data do
-          "1\n" -> update_wrist(state, 1)
-          "-1\n" -> update_wrist(state, -1)
-          _ -> :ok
+          "Y1\n" -> update_wrist(state, -1)
+          "Y-1\n" -> update_wrist(state, 1)
+          "X1\n" -> update_hip(state, 1)
+          "X-1\n" -> update_hip(state, -1)
+          _ -> state
         end
         #:gen_tcp.send(socket, "Roger, wilco!\n")
         do_listen(socket, state)
@@ -33,8 +35,22 @@ defmodule Exroboarm.TcpServer do
   end
 
   def update_wrist(state, direction) do
-    new_state = state.wrist(state.wrist + direction)
-    Exroboarm.Client.wrist(state.client, new_state.wrist, 1000)
+    new_state = state.wrist(update_bounded(state.wrist + direction, 0, 180))
+    Exroboarm.Client.wrist(state.client, new_state.wrist, 500)
     new_state
+  end
+
+  def update_hip(state, direction) do
+    new_state = state.hip(update_bounded(state.hip + direction, 0, 180))
+    Exroboarm.Client.hip(state.client, new_state.hip, 500)
+    new_state
+  end
+
+  defp update_bounded(value, min, max) do
+    cond do
+      value < min -> min
+      value > max -> max
+      :else       -> value
+    end
   end
 end

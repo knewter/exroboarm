@@ -1,2 +1,2 @@
-[ "erlang-serial": {:git, "git://github.com/knewter/erlang-serial.git", "41d7d3fd5f722635b2c77115304abdadabce1da7", [{:branch, "ssc32"}]},
-  "exactor": {:git, "git://github.com/sasa1977/exactor.git", "ee207af78849fc277b5d33edfbb493e6f369320a", []} ]
+%{"erlang-serial": {:git, "git://github.com/knewter/erlang-serial.git", "7a7b803a82d5f98bfe11f6dc19a3647c70ba7634", [branch: "ssc32"]},
+  "exactor": {:git, "git://github.com/sasa1977/exactor.git", "f820f6a039224e83a62ab5834dd3932cfaa1a557", []}}

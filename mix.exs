@@ -4,7 +4,6 @@ defmodule Exroboarm.Mixfile do
   def project do
     [ app: :exroboarm,
       version: "0.0.1",
-      elixir: "~> 0.12.1-dev",
       deps: deps ]
   end
 

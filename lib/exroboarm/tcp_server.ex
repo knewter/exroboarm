@@ -36,13 +36,13 @@ defmodule Exroboarm.TcpServer do
 
   def update_wrist(state, direction) do
     new_state = state.wrist(update_bounded(state.wrist + direction, 0, 180))
-    Exroboarm.Client.wrist(state.client, new_state.wrist, 500)
+    Exroboarm.Client.wrist(state.client, new_state.wrist, 100)
     new_state
   end
 
   def update_hip(state, direction) do
     new_state = state.hip(update_bounded(state.hip + direction, 0, 180))
-    Exroboarm.Client.hip(state.client, new_state.hip, 500)
+    Exroboarm.Client.hip(state.client, new_state.hip, 100)
     new_state
   end
 

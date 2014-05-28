@@ -11,13 +11,13 @@ defmodule Exroboarm.Client do
 
   [:hip, :shoulder, :elbow, :grip, :wrist] |> Enum.map(fn(which) ->
     defcall unquote(which)(angle, time), state: state do
-      do_request(apply(Commands, which, [angle, time]), state)
+      do_request(apply(Commands, unquote(which), [angle, time]), state)
     end
   end)
 
   defp do_request(request, state) do
     IO.inspect request
-    state.device <- {:send, request}
+    send(state.device,  {:send, request})
     set_and_reply(state, :ok)
   end
 end
